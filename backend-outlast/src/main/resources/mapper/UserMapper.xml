@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.UserMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.po.UserPO">
+        <id column="uid" property="uid" />
+        <result column="uname" property="uname" />
+        <result column="password" property="password" />
+        <result column="user_role" property="user_role" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="description" property="description" />
+        <result column="ability" property="ability" />
+        <result column="preference" property="preference" />
+        <result column="activity" property="activity" />
+        <result column="equipment" property="equipment" />
+        <result column="cooperation" property="cooperation" />
+        <result column="evaluation" property="evaluation" />
+        <result column="similarity" property="similarity" />
+    </resultMap>
+    <insert id="insert" parameterType="com.example.demo.po.UserPO" useGeneratedKeys="true" keyProperty="uid">
+        insert into user (uid, uname, password, user_role, phone, email, description, ability,
+                          preference, activity, equipment, cooperation, evaluation, similarity)
+        values (#{uid}, #{uname}, #{password}, #{user_role}, #{phone}, #{email}, #{description},
+                #{ability}, #{preference}, #{activity}, #{equipment}, #{cooperation}, #{evaluation}, #{similarity})
+    </insert>
+    <select id="selectByUname" resultMap="BaseResultMap">
+        select uid, uname, password, user_role, phone, email, description, ability,
+               preference, activity, equipment, cooperation, evaluation, similarity
+        from user
+        where uname = #{uname}
+    </select>
+    <select id="selectByUid" resultMap="BaseResultMap">
+        select uid, uname, password, user_role, phone, email, description, ability,
+               preference, activity, equipment, cooperation, evaluation, similarity
+        from user
+        where uid = #{uid}
+    </select>
+    <update id="update">
+        update user
+        set description = #{description}
+        where uid = #{uid}
+    </update>
+    <update id="updatePreference">
+        update user
+        set preference = #{preference}
+        where uid = #{uid}
+    </update>
+    <update id="updateEquipment">
+        update user
+        set equipment = #{equipment}
+        where uid = #{uid}
+    </update>
+    <update id="updateSimilarity">
+        update user
+        set similarity = #{similarity}
+        where uid = #{uid}
+    </update>
+    <update id="updateAbility">
+        update user
+        set ability = #{ability}
+        where uid = #{uid}
+    </update>
+    <update id="updateEvaluation">
+        update user
+        set evaluation = #{evaluation}
+        where uid = #{uid}
+    </update>
+    <update id="increaseActivity">
+        update user
+        set ability = ability+#{num}
+        where uid = #{uid}
+    </update>
+</mapper>

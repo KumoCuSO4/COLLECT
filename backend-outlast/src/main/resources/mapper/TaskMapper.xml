@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.TaskMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.po.TaskPO">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="end_time" property="end_time" />
+        <result column="worker_num" property="worker_num" />
+        <result column="difficulty" property="difficulty" />
+        <result column="type" property="type" />
+        <result column="equipment" property="equipment" />
+        <result column="others" property="others" />
+        <result column="user_id" property="user_id" />
+        <result column="user_name" property="user_name" />
+        <result column="executable_file" property="executable_file" />
+        <result column="doc_file" property="doc_file" />
+        <result column="executable_file_uuid" property="executable_file_uuid" />
+        <result column="doc_file_uuid" property="doc_file_uuid" />
+    </resultMap>
+    <insert id="insert" parameterType="com.example.demo.po.TaskPO" useGeneratedKeys="true" keyProperty="id">
+        insert into task (id, name, description, end_time, worker_num, difficulty, type, equipment, others, user_id, user_name, executable_file, doc_file, executable_file_uuid, doc_file_uuid)
+        values (#{id}, #{name}, #{description}, #{end_time}, #{worker_num}, #{difficulty},
+                #{type}, #{equipment}, #{others}, #{user_id}, #{user_name}, #{executable_file}, #{doc_file}, #{executable_file_uuid}, #{doc_file_uuid})
+    </insert>
+    <select id="selectAllTask" resultMap="BaseResultMap">
+        select *
+        from task
+        order by end_time DESC
+    </select>
+    <select id="selectWithUid" resultMap="BaseResultMap">
+        select t.id, t.name, t.description, t.end_time, t.worker_num, t.difficulty, t.type, t.equipment, t.others, t.user_id, t.user_name
+        from task t
+        where t.id NOT IN (
+            select o.task_id
+            from task_order o
+            where o.user_id = #{uid}
+        )
+        order by t.end_time DESC
+    </select>
+    <select id="selectWithUidWithDiffNearest" resultMap="BaseResultMap">
+        select t.id, t.name, t.description, t.end_time, t.worker_num, t.difficulty, t.type, t.equipment, t.others, t.user_id, t.user_name
+        from task t
+        where t.id NOT IN (
+            select o.task_id
+            from task_order o
+            where o.user_id = #{uid}
+        )
+        order by t.difficulty - #{diff} , t.end_time DESC
+        limit #{limit}
+    </select>
+    <select id="selectCreatedWithUid" resultMap="BaseResultMap">
+        select *
+        from task t
+        where t.user_id = #{uid}
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select *
+        from task
+        where id = #{task_id}
+    </select>
+    <select id="selectEquipmentByUid" resultType="String">
+        select e.equipment
+        from (select t.equipment, count(*) as num
+              from task t, task_order o
+              where o.user_id = #{uid} and o.task_id = t.id
+              group by t.equipment
+              order by num desc) as e
+        limit 1
+    </select>
+    <select id="selectTypeByUid" resultType="String">
+        select e.type
+        from (select t.type, count(*) as num
+              from task t,task_order o
+              where o.user_id = #{uid} and o.task_id = t.id
+              group by t.type
+              order by num desc) as e
+            limit 1
+    </select>
+</mapper>

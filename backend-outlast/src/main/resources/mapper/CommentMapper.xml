@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.CommentMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.po.CommentPO">
+        <id column="id" property="id" />
+        <result column="user_id" property="user_id" />
+        <result column="report_id" property="report_id" />
+        <result column="score" property="score" />
+        <result column="description" property="description" />
+        <result column="post_time" property="post_time" />
+    </resultMap>
+    <insert id="insert" parameterType="com.example.demo.po.CommentPO" useGeneratedKeys="true" keyProperty="id">
+        insert into comment (id, user_id, report_id, score, description, post_time)
+        values (#{id}, #{user_id}, #{report_id}, #{score}, #{description}, #{post_time})
+    </insert>
+    <select id="selectByReportId" resultMap="BaseResultMap">
+        select id, user_id, report_id, score, description, post_time
+        from comment c
+        where report_id = #{report_id}
+        order by c.post_time DESC
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select id, user_id, report_id, score, description, post_time
+        from comment c
+        where user_id = #{user_id} and report_id = #{report_id}
+    </select>
+</mapper>

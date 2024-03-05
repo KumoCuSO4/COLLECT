@@ -1,0 +1,42 @@
+:root {
+  --navbar-height: 6rem;
+  --sidebar-width: 20rem;
+  --card-color: #ffffff;
+  --hover-color: #e6f7ff;
+  --global-color: #1890ff;
+  --global-textColor: #fff;
+}
+
+* {
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  min-width: 1200px;
+  min-height: 900px;
+  overflow-y: hidden;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+input,
+button,
+textarea {
+  outline: none;
+}
+
+textarea {
+  resize: none;
+}

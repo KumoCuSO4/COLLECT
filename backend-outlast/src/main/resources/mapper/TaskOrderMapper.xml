@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.TaskOrderMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.po.TaskOrderPO">
+        <id column="id" property="id" />
+        <result column="user_id" property="user_id" />
+        <result column="user_name" property="user_name" />
+        <result column="task_id" property="task_id" />
+        <result column="task_name" property="task_name" />
+        <result column="create_time" property="create_time" />
+        <result column="status" property="status" />
+    </resultMap>
+    <insert id="insert" parameterType="com.example.demo.po.TaskOrderPO" useGeneratedKeys="true" keyProperty="id">
+        insert into task_order (id, user_id, user_name, task_id, task_name, create_time , status)
+        values (#{id}, #{user_id}, #{user_name}, #{task_id}, #{task_name}, #{create_time}, #{status})
+    </insert>
+    <select id="selectByStatus" resultMap="BaseResultMap">
+        select o.id, o.user_id, o.user_name, o.task_id, o.task_name, o.create_time, o.status
+        from task_order o
+        where o.user_id = #{uid} and o.status = #{status}
+        order by o.create_time DESC
+    </select>
+    <select id="selectByUid" resultMap="BaseResultMap">
+        select *
+        from task_order o
+        where o.user_id = #{uid}
+        order by o.create_time DESC
+    </select>
+    <select id="updateStatus" resultMap="BaseResultMap">
+        update task_order
+        set status = #{status}
+        where task_id = #{tid}
+    </select>
+</mapper>

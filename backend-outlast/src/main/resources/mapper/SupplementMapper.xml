@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapperservice.SupplementMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.po.SupplementPO">
+        <id column="id" property="id" />
+        <result column="user_id" property="user_id" />
+        <result column="report_id" property="report_id" />
+        <result column="description" property="description" />
+        <result column="step" property="step" />
+        <result column="equipment" property="equipment" />
+        <result column="post_time" property="post_time" />
+    </resultMap>
+    <insert id="insert" parameterType="com.example.demo.po.SupplementPO" useGeneratedKeys="true" keyProperty="id">
+        insert into supplement (id, user_id, report_id, description, step, equipment, post_time)
+        values (#{id}, #{user_id}, #{report_id}, #{description}, #{step}, #{equipment}, #{post_time})
+    </insert>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+            select id, user_id, report_id, description, step, equipment, post_time
+            from supplement s
+            where id = #{id}
+        </select>
+    <select id="selectByReportId" resultMap="BaseResultMap">
+        select id, user_id, report_id, description, step, equipment, post_time
+        from supplement s
+        where report_id = #{report_id}
+        order by s.post_time DESC
+    </select>
+    <select id="selectPreferenceByUid" resultType="java.lang.Integer">
+        select count(s.id)
+        from supplement s, task t,report p
+        where t.id = p.task_id and s.report_id = p.id and s.user_id = #{uid} and t.type = #{preference}
+    </select>
+    <select id="selectEquipmentByUid" resultType="java.lang.Integer">
+        select count(s.id)
+        from supplement s, task t,report p
+        where t.id = p.task_id and s.report_id = p.id and s.user_id = #{uid} and t.equipment = #{equipment}
+    </select>
+</mapper>
